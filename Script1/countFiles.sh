@@ -1,14 +1,5 @@
 #!/bin/bash
 
-#FAILS IF FILE NAME HAS SPACE SEPARATED WORDS
+#FAILS BECAUSE OF THE TOTAL LINE IN ls -l
 
-filename=$( ls )
-count=0
-
-for i in $filename; do
-	if [ -f $i ]; then 
-		count=$(($count+1))
-	fi
-done
-
-echo $count
+ls -l $1 | grep -v ^d | wc -l
