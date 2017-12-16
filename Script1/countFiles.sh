@@ -1,5 +1,3 @@
 #!/bin/bash
 
-#FAILS IF DIRECTORY NAME HAS SPACE SEPARATED WORDS
-
-ls -l $1 | grep ^- | wc -l
+ls -al "$1" | grep -o ^\-.*$2$ | wc -l
