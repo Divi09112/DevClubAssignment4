@@ -1,5 +1,5 @@
 #!/bin/bash
 
-#FAILS BECAUSE OF THE TOTAL LINE IN ls -l
+#FAILS IF DIRECTORY NAME HAS SPACE SEPARATED WORDS
 
-ls -l $1 | grep -v ^d | wc -l
+ls -l $1 | grep ^- | wc -l
