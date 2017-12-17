@@ -1,8 +1,20 @@
 #!/bin/bash
 
-#DOESN'T CHECK IF FILE IS OF THE REQUIRED FORMAT AND FAILS IF INITIAL PART OF THE USER IS GIVEN
 
-if [ $1 = '' ] || [ ! -f "$1" ];
+#to check if file is of required format
+file_format () {
+	lines=$(cat "$1" | wc -l)
+	temp_lines=$(cat "$1" | grep -c ".*:x:.*:.*:.*:.*:.*")
+	if [ "$lines" != "$temp_lines" ];
+	then
+		echo false
+	else 
+		echo true
+	fi
+}
+
+
+if [ "$1" = '' ] || [ ! -f "$1" ];
 then
 	echo "Invalid File"
 	exit 1
@@ -11,12 +23,18 @@ then
 	echo "Invalid user"
 	exit 1
 else
-	line=$(cat "$1" | grep "^$2")
-	if [ "$line" = '' ];
+	if $(file_format "$1") ;
 	then
-		echo "User not present"
+		line=$(cat "$1" | grep "^$2:")
+		if [ "$line" = '' ];
+		then
+			echo "User not present"
+		else
+			echo "$line" | cut -d":" -f5
+		fi
 	else
-		echo "$line" | cut -d":" -f5
+		echo "File is not of the required format"
+		exit 1
 	fi
 fi
 
