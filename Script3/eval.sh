@@ -10,28 +10,16 @@ while read tmp opr; do
 	
 	line=$(($line+1))	
 
-	case "$opr" in
-		"+")
-			result=$(($result+$tmp))
-			;;
+	if [[ "$opr" =~ ^[/\*\+\-]$ ]]; then
+		#using regex to verify operators
 
-		"-")
-			result=$(($result-$tmp))
-			;;
+		result=$(($result $opr $tmp))
 
-		"/")	
-			result=$(($result/$tmp))
-			;;
-		
-		"*")
-			result=$(($result*$tmp))
-			;;
+	else
+		echo "Invalid operation on line $line"
+		exit 1
+	fi
 
-		*)
-			echo "Invalid operation on line $line"
-			exit 1
-			;;
-	esac
 done < "$1"
 
 echo $result
