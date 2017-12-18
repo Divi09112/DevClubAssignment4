@@ -8,8 +8,13 @@ IFS="
 "
 
 for line in $(cat "$1");do
-	result=$(($result $(echo $line | cut -d" " -f2) $(echo $line | cut -d" " -f1)))
+	
+	num=$(echo $line | cut -d" " -f1)
+	op=$(echo $line | cut -d" " -f2)
+	
+	result=$(($result $op $num))
 done
+
 echo $result
 
 IFS=$old
