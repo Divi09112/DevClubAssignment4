@@ -6,16 +6,29 @@
 declare -r org="$PWD"
 
 backup () {
+
 for file in $(ls "$1");do
 
 	if [ ! -e "$2"/$file ];then
-		cp -r "$1"/$file "$2"
+		
+		if [ -d "$2"/$file ];then
+			mkdir "$2"/$file 
+			backup "$1"/$file "$2"/$file "$3"/$file
+			
+		else
+			cp -r "$1"/$file "$2"
+			echo "$3"/"$file"
+		fi
 
 	elif [ -d "$1"/$file ] && [ -e "$2"/$file ];then
-		backup "$1"/$file "$2"/$file
-
+		backup "$1"/$file "$2"/$file "$3"/$file
+	else
+		:
 	fi
 done
+
+
+
 
 }
 
@@ -45,7 +58,9 @@ else
 		exit 1
 
 	else
+		echo "Files copied from "$1" to "$2" are:"
 		backup "$1" "$2"
+		echo "Files copied from "$2" to "$1" are:"
 		backup "$2" "$1"
 	fi
 fi
