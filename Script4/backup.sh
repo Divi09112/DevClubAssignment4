@@ -31,6 +31,20 @@ elif [ ! -d "$1" ] || [ ! -d "$2" ]; then
 	exit 1
 
 else
-	backup "$1" "$2"
-	backup "$2" "$1"
+	cd "$1"
+	dir1="$PWD"
+	cd "$org"
+	cd "$2"
+	dir2="$PWD"
+	
+	#takes care if onne is parent dir of other(using regex)
+	if [[ "$dir1" =~ ^"$dir2".* ]] || [[ "$dir2" =~ ^"$dir1".* ]]; then
+
+		echo "Cannot apply operation if one is the parent directory of other"
+		exit 1
+
+	else
+		backup "$1" "$2"
+		backup "$2" "$1"
+	fi
 fi
