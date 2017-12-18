@@ -3,18 +3,35 @@
 #DOESN'T CHECK IF THE FILE IS IN THE REQUIRED FORMAT
 
 result=0
-old=$IFS
-IFS="
-"
 
-for line in $(cat "$1");do
+line=0
+
+while read tmp opr; do
 	
-	num=$(echo $line | cut -d" " -f1)
-	op=$(echo $line | cut -d" " -f2)
-	
-	result=$(($result $op $num))
-done
+	line=$(($line+1))	
+
+	case "$opr" in
+		"+")
+			result=$(($result+$tmp))
+			;;
+
+		"-")
+			result=$(($result-$tmp))
+			;;
+
+		"/")	
+			result=$(($result/$tmp))
+			;;
+		
+		"*")
+			result=$(($result*$tmp))
+			;;
+
+		*)
+			echo "Invalid operation on line $line"
+			exit 1
+			;;
+	esac
+done < "$1"
 
 echo $result
-
-IFS=$old
