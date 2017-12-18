@@ -36,7 +36,8 @@ else
 	cd "$org"
 	cd "$2"
 	dir2="$PWD"
-	
+	cd "$org"	
+
 	#takes care if onne is parent dir of other(using regex)
 	if [[ "$dir1" =~ ^"$dir2".* ]] || [[ "$dir2" =~ ^"$dir1".* ]]; then
 
